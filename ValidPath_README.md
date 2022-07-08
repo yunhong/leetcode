@@ -9,31 +9,8 @@ You want to determine if there is a valid path that exists from vertex source to
 
 Given edges and the integers n, source, and destination, return true if there is a valid path from source to destination, or false otherwise.
 
- 
-
-Example 1:
-
-
-Input: n = 3, edges = [[0,1],[1,2],[2,0]], source = 0, destination = 2
-Output: true
-Explanation: There are two paths from vertex 0 to vertex 2:
-- 0 → 1 → 2
-- 0 → 2
-Example 2:
-
-
-Input: n = 6, edges = [[0,1],[0,2],[3,5],[5,4],[4,3]], source = 0, destination = 5
-Output: false
-Explanation: There is no path from vertex 0 to vertex 5.
- 
-
-Constraints:
-
-1 <= n <= 2 * 105
-0 <= edges.length <= 2 * 105
-edges[i].length == 2
-0 <= ui, vi <= n - 1
-ui != vi
-0 <= source, destination <= n - 1
-There are no duplicate edges.
-There are no self edges.
+Idea:
+Build the shortest-path-tree from the source and the destination simultaneously
+Each time pick the one with smaller next_layer for expansion
+Whenever the shortest-path-trees from S and T interest, stop, and return
+It will stop with at most N/2 steps, or Diameter/2 steps. 
