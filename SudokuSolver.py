@@ -3,6 +3,28 @@ class Solution:
     # Solve the Sudoku by modifying the input board in-place.
     # Do not return any value.
     board = []
+    
+    pos24_list = [0] * 81
+    
+    for index in range(81): # index = i0 + 9 * j0
+        i0 = index % 9
+        j0 = index / 9
+        res = []
+        for i in range(9):
+            if(i != i0):
+                res.append([i, j0]) 
+        for j in range(9):
+            if(j != j0):
+                res.append([i0, j])
+        I0 = 3 * int(i0/3)
+        J0 = 3 * int(j0/3)
+        for i in range(I0, I0+3):
+            for j in range(J0, J0+3):
+                if([i, j] != [i0, j0]):
+                    res.append([i, j])
+        pos24_list[index] = res
+    
+    
     def solveSudoku(self, board):
         self.board = board
         self.DFS() 
@@ -18,6 +40,7 @@ class Solution:
         
         for node in empty_nodes:
             candidates = self.get_candidates(node)
+            
             if(len(candidates) == 0): return False
             if(len(candidates) < size_nxt):
                 size_nxt = len(candidates)
@@ -36,19 +59,8 @@ class Solution:
             
     def get_candidates(self, node):
         [i0, j0] = node
-        pos24 = []
-        for i in range(9):
-            if(i != i0):
-                pos24.append([i, j0])
-        for j in range(9):
-            if(j != j0):
-                pos24.append([i0, j])
-        I0 = 3 * int(i0/3)
-        J0 = 3 * int(j0/3)
-        for i in range(I0, I0+3):
-            for j in range(J0, J0+3):
-                if([i, j] != node):
-                    pos24.append([i, j])
+        index = i0 + 9 * j0
+        pos24 = self.pos24_list[index]
         
         board = self.board
         flag9 = 9 * [False]
