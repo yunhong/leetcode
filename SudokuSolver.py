@@ -25,10 +25,21 @@ class Solution:
         pos24_list[index] = res
     
     
-    def solveSudoku(self, board):
+    def solveSudoku(self, board): # input element char
         self.board = board
+        for i in range(9):
+            for j in range(9):
+                if(board[i][j] == '.'): board[i][j] = 0
+                else: board[i][j] = int(board[i][j])
+        
         self.DFS() 
+        
+        for i in range(9):
+            for j in range(9):
+                if(board[i][j] == 0): board[i][j] = '.'
+                else: board[i][j] = str(board[i][j])
 
+        
     def DFS(self):
         empty_nodes = self.get_empty_nodes()
         if(len(empty_nodes) == 0): return True
@@ -49,13 +60,12 @@ class Solution:
         # end for loop, find node_nxt as min candidate choices
         [i, j] = node_nxt
         for v in candidates_nxt:
-            board[i][j] = str(v)
+            board[i][j] = v
             res = self.DFS()
             if(res): return True
         # end for loop  
-        board[i][j] = '.'
+        board[i][j] = 0 # use it to represent '.'
         return False
-           
             
     def get_candidates(self, node):
         [i0, j0] = node
@@ -65,10 +75,9 @@ class Solution:
         board = self.board
         flag9 = 9 * [False]
         for [i, j] in pos24:
-            if(board[i][j] != '.'):
+            if(board[i][j] != 0):
                 c = board[i][j]
-                v = int(c) -1
-                flag9[v] = True
+                flag9[c-1] = True
         # end for loop
         candidates = []
         for v in range(1, 10):
@@ -81,6 +90,6 @@ class Solution:
         empty_nodes = []
         for i in range(9):
             for j in range(9):
-                if(board[i][j] == '.'): 
+                if(board[i][j] == 0): 
                     empty_nodes.append([i, j])
         return empty_nodes
